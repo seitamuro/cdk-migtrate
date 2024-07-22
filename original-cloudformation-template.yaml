@@ -1,0 +1,90 @@
+---
+Metadata:
+  TemplateId: "arn:aws:cloudformation:us-east-1:230806776430:generatedTemplate/3fb5206b-9afb-4e0a-9af5-2981f9777ea9"
+Parameters:
+  LambdaFunction00cdkimporttest00dd2ZiCodeS3BucketOneOfKjhN0:
+    NoEcho: "true"
+    Type: "String"
+    Description: "An Amazon S3 bucket in the same AWS-Region as your function. The\
+      \ bucket can be in a different AWS-account.\nThis property can be replaced with\
+      \ other exclusive properties"
+  LambdaFunction00cdkimporttest00dd2ZiCodeS3KeyOneOf3gn6H:
+    NoEcho: "true"
+    Type: "String"
+    Description: "The Amazon S3 key of the deployment package.\nThis property can\
+      \ be replaced with other exclusive properties"
+Resources:
+  IAMManagedPolicy00policyserviceroleAWSLambdaBasicExecutionRoleea738bc0298f49e090888d510d13e74c003F9wG:
+    UpdateReplacePolicy: "Retain"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Delete"
+    Properties:
+      ManagedPolicyName: "AWSLambdaBasicExecutionRole-ea738bc0-298f-49e0-9088-8d510d13e74c"
+      Path: "/service-role/"
+      Description: ""
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource: "arn:aws:logs:us-east-1:230806776430:*"
+          Action: "logs:CreateLogGroup"
+          Effect: "Allow"
+        - Resource:
+          - "arn:aws:logs:us-east-1:230806776430:log-group:/aws/lambda/cdk_import_test:*"
+          Action:
+          - "logs:CreateLogStream"
+          - "logs:PutLogEvents"
+          Effect: "Allow"
+      Roles:
+      - "cdk_import_test-role-0g5z39xi"
+      Users: []
+  IAMRole00cdkimporttestrole0g5z39xi00tBC2t:
+    UpdateReplacePolicy: "Retain"
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Delete"
+    Properties:
+      Path: "/service-role/"
+      ManagedPolicyArns:
+      - Ref: "IAMManagedPolicy00policyserviceroleAWSLambdaBasicExecutionRoleea738bc0298f49e090888d510d13e74c003F9wG"
+      MaxSessionDuration: 3600
+      RoleName: "cdk_import_test-role-0g5z39xi"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Action: "sts:AssumeRole"
+          Effect: "Allow"
+          Principal:
+            Service: "lambda.amazonaws.com"
+  LambdaFunction00cdkimporttest00dd2Zi:
+    UpdateReplacePolicy: "Retain"
+    Type: "AWS::Lambda::Function"
+    DeletionPolicy: "Delete"
+    Properties:
+      MemorySize: 128
+      Description: ""
+      TracingConfig:
+        Mode: "PassThrough"
+      Timeout: 3
+      RuntimeManagementConfig:
+        UpdateRuntimeOn: "Auto"
+      Handler: "lambda_function.lambda_handler"
+      Code:
+        S3Bucket:
+          Ref: "LambdaFunction00cdkimporttest00dd2ZiCodeS3BucketOneOfKjhN0"
+        S3Key:
+          Ref: "LambdaFunction00cdkimporttest00dd2ZiCodeS3KeyOneOf3gn6H"
+      Role:
+        Fn::GetAtt:
+        - "IAMRole00cdkimporttestrole0g5z39xi00tBC2t"
+        - "Arn"
+      FileSystemConfigs: []
+      FunctionName: "cdk_import_test"
+      Runtime: "python3.12"
+      PackageType: "Zip"
+      LoggingConfig:
+        LogFormat: "Text"
+        LogGroup: "/aws/lambda/cdk_import_test"
+      EphemeralStorage:
+        Size: 512
+      Architectures:
+      - "x86_64"
